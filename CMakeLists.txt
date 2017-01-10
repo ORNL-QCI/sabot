@@ -82,9 +82,9 @@ endif()
 find_package(Boost COMPONENTS ${required_boost_components} REQUIRED)
 link_directories(${Boost_LIBRARY_DIR})
 
-include_directories("${CMAKE_SOURCE_DIR}/")
-include_directories("${CMAKE_SOURCE_DIR}/tpls")
-include_directories("${CMAKE_SOURCE_DIR}/tpls/rapidjson/include/")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/tpls")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/tpls/rapidjson/include/")
 
 message("------------------------------")
 
