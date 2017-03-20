@@ -34,7 +34,7 @@ message("------------------------------")
 message("Build Configuration:")
 
 if(CMAKE_COMPILER_IS_GNUCC)
-   list(APPEND CMAKE_C_FLAGS -Wall -Wextra -Werror -Wno-long-long -pedantic)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-long-long -pedantic")
 else()
     message(WARNING "Compiler is not GNUCC, using default warning levels.")
 endif()
