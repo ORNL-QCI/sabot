@@ -11,7 +11,7 @@ namespace state {
 	 */
 	template <class T> class quantum_state : public state_type {
 	 public:
-		using state_container_type = ::ms_container<std::uint_fast64_t, T, 8>;
+		using state_container_type = ::ms_container<std::uint_fast64_t, T>;
 		
 		/**
 		 * \brief Constructor.
@@ -37,38 +37,18 @@ namespace state {
 		 * \brief Modify a state with a given program.
 		 */
 		bool program_modify_state(const std::uint_fast64_t stateId, const ::language::program&& program) {
-			std::mutex* elementMutex = 0;
-			boost::shared_mutex* editMutex = 0;
-			
-			auto& temp = states.edit(stateId, elementMutex, editMutex);
-			
-			assert(elementMutex != 0);
-			assert(editMutex != 0);
-			
-			std::lock_guard<std::mutex> elementLock(*elementMutex);
-			boost::unique_lock<boost::shared_mutex> editULock(*editMutex);
-			
-			return modify_state(temp, program);
+			return states.edit_item(stateId,
+					[&](T& item)->bool {
+						return modify_state(item, program);
+					});
 		}
 		
 		/**
 		 * \brief Measure a state with a given program.
 		 */
 		bool program_measure_state(const std::uint_fast64_t stateId, const ::language::program&& program, string_buffer<>& buffer) {
-			std::mutex* elementMutex = 0;
-			boost::shared_mutex* editMutex = 0;
-			
-			/** \todo this probably needs to be reduced */
 			try {
-				auto& temp = states.edit(stateId, elementMutex, editMutex);
-				
-				assert(elementMutex != 0);
-				assert(editMutex != 0);
-				
-				std::lock_guard<std::mutex> elementLock(*elementMutex);
-				boost::unique_lock<boost::shared_mutex> editULock(*editMutex);
-				
-				return measure_state(temp, program, buffer);
+				return states.edit_item(stateId, [&](T& item){return measure_state(item, program, buffer);});
 			} catch (const std::out_of_range& e) {
 				return false;
 			}
@@ -103,7 +83,7 @@ namespace state {
 		}
 	
 	 protected:
-		virtual T encode_state(const ::language::program& program) = 0;
+		virtual T *encode_state(const ::language::program& program) = 0;
 		virtual bool modify_state(T& state, const ::language::program& program) = 0;
 		virtual bool measure_state(T& state, const ::language::program& program , string_buffer<>& buffer) = 0;
 		virtual bool compute_result(const ::language::program& program, string_buffer<>& buffer) = 0;

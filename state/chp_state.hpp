@@ -125,7 +125,7 @@ namespace state {
 		~chp_state();
 		
 	 protected:
-		_chp_state encode_state(const ::language::program& program);
+		_chp_state *encode_state(const ::language::program& program);
 		bool modify_state(_chp_state& state, const ::language::program& program);
 		bool measure_state(_chp_state& state, const ::language::program& program, string_buffer<>& buffer);
 		bool compute_result(const ::language::program& program, string_buffer<>& buffer);
@@ -536,8 +536,9 @@ namespace state {
 				switch(instruction.bytecode) {
 				 case ::machine::operation::macro:
 				 {
-					auto& p = ::universe::here().get_macro(instruction.operands[0], instruction.operands[1]);
-					run_program(state, p, buffer);
+					 std::runtime_error("TODO");
+					//auto& p = ::universe::here().get_macro(instruction.operands[0], instruction.operands[1]);
+					//run_program(state, p, buffer);
 					break;
 				 }
 				 case ::machine::operation::initialize:

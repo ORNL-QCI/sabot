@@ -26,10 +26,10 @@ namespace state {
 	/**
 	 * \brief Encode a state via a program.
 	 */
-	_chp_state chp_state::encode_state(const ::language::program& program) {
-		_chp_state returnState;
+	_chp_state *chp_state::encode_state(const ::language::program& program) {
+		_chp_state *returnState = new _chp_state();
 		
-		run_program(returnState, program);
+		run_program(*returnState, program);
 		
 		return returnState;
 	}

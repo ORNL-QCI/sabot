@@ -46,11 +46,6 @@ class kernel {
 	 */
 	std::uint64_t insert_macro(language::program&& macro);
 	
-	/**
-	 * \brief \todo
-	 */
-	const language::program& get_macro(std::uint64_t macroId);
-
  private:
 	/**
 	 * \brief \todo
@@ -62,7 +57,7 @@ class kernel {
 	 * 
 	 * \note Threadsafe
 	 */
-	ms_container<language::program::id_t, language::program, 16, true> _macros;
+	ms_container<language::program::id_t, language::program> _macros;
 };
 
 #endif
