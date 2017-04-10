@@ -5,7 +5,7 @@ import zmq
 sabotAddress = 'ipc:///tmp/sabot'
 context = zmq.Context()
 socket = context.socket(zmq.REQ)
-socket.connect(sabotAddress);
+socket.connect(sabotAddress)
 
 socket.send(json.dumps(
         {
